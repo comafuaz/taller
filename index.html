@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitio en Construcción — Taller IA en la Función Judicial</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a1a2e;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* === FONDO ANIMADO DE PARTÍCULAS === */
+        canvas#particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* === LÍNEAS FLUJANTES === */
+        .flow-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .flow-lines::before {
+            content: '';
+            position: absolute;
+            bottom: -10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(ellipse, rgba(45, 212, 168, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        .flow-lines::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(ellipse, rgba(45, 212, 168, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 5s ease-in-out infinite reverse;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        /* === CONTENEDOR PRINCIPAL === */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+            padding: 40px 30px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === LOGO BALANZA === */
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            border: 2px solid #2dd4a8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotateIn 1.2s ease-out;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            fill: none;
+            stroke: #2dd4a8;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes rotateIn {
+            from { transform: rotate(-180deg) scale(0); opacity: 0; }
+            to { transform: rotate(0deg) scale(1); opacity: 1; }
+        }
+
+        /* === ETIQUETA GRATUITO === */
+        .badge {
+            display: inline-block;
+            background-color: #2dd4a8;
+            color: #0a1a2e;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 6px 20px;
+            margin-bottom: 25px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        /* === TÍTULO CONSTRUCCIÓN === */
+        .construction-title {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            line-height: 1.1;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .construction-title .highlight {
+            color: #2dd4a8;
+            display: block;
+        }
+
+        /* === ICONO ENGRANAJE ANIMADO === */
+        .gear-icon {
+            display: inline-block;
+            animation: spin 4s linear infinite;
+            margin: 20px 0;
+        }
+
+        .gear-icon svg {
+            width: 60px;
+            height: 60px;
+            fill: #2dd4a8;
+            opacity: 0.6;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* === SEPARADOR === */
+        .separator {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #2dd4a8, transparent);
+            margin: 25px auto;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        /* === TÍTULO DEL TALLER === */
+        .workshop-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .workshop-title span {
+            background-color: #2dd4a8;
+            color: #0a1a2e;
+            padding: 8px 16px;
+            display: inline-block;
+        }
+
+        /* === SUBTÍTULO === */
+        .workshop-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2dd4a8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            animation: fadeInUp 1s ease-out 0.55s both;
+        }
+
+        /* === INFO BLOCK === */
+        .info-block {
+            margin: 20px 0;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .info-block .date {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .info-block .location {
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.85;
+            line-height: 1.6;
+        }
+
+        .info-block .location .address {
+            color: #2dd4a8;
+            font-weight: 600;
+        }
+
+        /* === SPEAKERS === */
+        .speakers {
+            margin: 30px 0;
+            animation: fadeInUp 1s ease-out 0.7s both;
+        }
+
+        .speaker {
+            margin: 15px 0;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(45, 212, 168, 0.15);
+        }
+
+        .speaker:last-child {
+            border-bottom: none;
+        }
+
+        .speaker .name {
+            color: #2dd4a8;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .speaker .role {
+            font-size: 0.85rem;
+            opacity: 0.75;
+            margin-top: 3px;
+            line-height: 1.5;
+        }
+
+        /* === FOOTER INFO === */
+        .footer-info {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(45, 212, 168, 0.2);
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .footer-info .audience {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .footer-info .notebook {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #2dd4a8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* === MENSAJE DE CONSTRUCCIÓN === */
+        .construction-message {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(45, 212, 168, 0.08);
+            border: 1px solid rgba(45, 212, 168, 0.25);
+            border-radius: 10px;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .construction-message p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        .construction-message .emoji {
+            font-size: 1.5rem;
+            margin-right: 8px;
+        }
+
+        /* === BARRA DE PROGRESO ANIMADA === */
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(45, 212, 168, 0.15);
+            border-radius: 2px;
+            margin: 20px auto 0;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            width: 30%;
+            height: 100%;
+            background: #2dd4a8;
+            border-radius: 2px;
+            animation: progressAnim 2s ease-in-out infinite;
+        }
+
+        @keyframes progressAnim {
+            0% { width: 10%; }
+            50% { width: 60%; }
+            100% { width: 10%; }
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 600px) {
+            .construction-title {
+                font-size: 2rem;
+            }
+
+            .workshop-title {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .speaker .name {
+                font-size: 0.9rem;
+            }
+
+            .speaker .role {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FONDO DE PARTÍCULAS -->
+    <canvas id="particles"></canvas>
+    <div class="flow-lines"></div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container">
+
+        <!-- LOGO -->
+        <div class="logo">
+            <svg viewBox="0 0 24 24">
+                <line x1="12" y1="3" x2="12" y2="20"></line>
+                <polyline points="6 7 12 3 18 7"></polyline>
+                <line x1="6" y1="7" x2="3" y2="12"></line>
+                <line x1="6" y1="7" x2="9" y2="12"></line>
+                <line x1="3" y1="12" x2="9" y2="12"></line>
+                <line x1="18" y1="7" x2="15" y2="12"></line>
+                <line x1="18" y1="7" x2="21" y2="12"></line>
+                <line x1="15" y1="12" x2="21" y2="12"></line>
+            </svg>
+        </div>
+
+        <!-- BADGE -->
+        <div class="badge">Taller Gratuito</div>
+
+        <!-- TÍTULO CONSTRUCCIÓN -->
+        <h1 class="construction-title">
+            Sitio en
+            <span class="highlight">Construcción</span>
+        </h1>
+
+        <!-- ENGRANAJE ANIMADO -->
+        <div class="gear-icon">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+            </svg>
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- TÍTULO DEL TALLER -->
+        <div class="workshop-title">
+            <span>Inteligencia Artificial en la Función Judicial</span>
+        </div>
+
+        <div class="workshop-subtitle">
