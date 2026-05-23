@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompts para taller de IA generativa aplicada a la función judicial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efectos de fondo tecnológico */
+        .tech-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .tech-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(45, 212, 168, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(30, 144, 255, 0.3) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+        }
+
+        .tech-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .tech-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(45, 212, 168, 0.5), transparent);
+            height: 1px;
+            animation: moveLine 15s linear infinite;
+        }
+
+        .tech-line:nth-child(1) { top: 10%; width: 100%; animation-delay: 0s; }
+        .tech-line:nth-child(2) { top: 30%; width: 100%; animation-delay: 5s; }
+        .tech-line:nth-child(3) { top: 50%; width: 100%; animation-delay: 10s; }
+        .tech-line:nth-child(4) { top: 70%; width: 100%; animation-delay: 2s; }
+        .tech-line:nth-child(5) { top: 90%; width: 100%; animation-delay: 7s; }
+
+        @keyframes moveLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #2dd4a8 0%, #8A2BE2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(45, 212, 168, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+            font-weight: 300;
+        }
+
+        /* Contenedor de tarjetas */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Tarjeta */
+        .card {
+            background: rgba(30, 30, 45, 0.8);
+            border: 1px solid rgba(45, 212, 168, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #2dd4a8, #8A2BE2, #2dd4a8);
+            border-radius: 12px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(45, 212, 168, 0.3);
+        }
+
+        .card-number {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: rgba(45, 212, 168, 0.5);
+        }
+
+        .card-content {
+            margin-right: 30px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .card-content p {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Botón de copiar */
+        .copy-btn {
+            background: linear-gradient(135deg, #2dd4a8 0%, #8A2BE2 100%);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #8A2BE2 0%, #2dd4a8 100%);
+            transform: scale(1.05);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
+        }
+
+        /* Icono de copiar */
+        .copy-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .card-content {
+                margin-right: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Efectos de fondo -->
+    <div class="tech-bg"></div>
+    <div class="tech-lines">
+        <div class="tech-line"></div>
+        <div class="tech-line"></div>
+        <div class="tech-line"></div>
+        <div class="tech-line"></div>
+        <div class="tech-line"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <h1 class="title">Prompts para taller de IA generativa aplicada a la función judicial</h1>
+        <p class="subtitle">Colección de prompts especializados para el ámbito judicial</p>
+    </header>
+
+    <!-- Contenedor de tarjetas -->
+    <div class="container">
+        <!-- Tarjeta 1 -->
+        <div class="card">
+            <div class="card-number">01</div>
+            <div class="card-content">
+                <p>Quisiera una página web en un solo archivo html que sea una Calculadora de Indemnización por Incapacidad
+El usuario debería poder ingresar 3 datos:
+Edad al momento del accidente:
+Ingreso mensual:
+Porcentaje de incapacidad
+y la fórmula a aplicar sería
+C = {A x [(1 + i)n - 1] / [i (1 + i)n]} x P/100
+Donde: 
+C es el capital a calcular
+A es el ingreso mensual ingresado, multiplicado por 13
+i es la tasa de descuento que es del 4% anual, es decir es 0,04
+n es 70 (edad límite) - edad al momento del accidente</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 0)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="card">
+            <div class="card-number">02</div>
+            <div class="card-content">
+                <p>crea una web en un solo archivo html que permita pegar un texto, detecte los nombres propios  (nombre y apellido) y los reemplace por su inicial. También los números de 8 y 11 cifras, que los reemplace por xxxxxxxx. Por ejemplo:
+Se presenta Juan Pérez, DNI 12345678 alegando que...
+que sea reemplazado por
+Se presenta J. P. DNI xxxxxxxx alegando que...</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 1)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="card">
+            <div class="card-number">03</div>
+            <div class="card-content">
+                <p>Tengo que lavar el auto, si el autolavado está a una cuadra, me conviene ir en auto o caminando?</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 2)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 4 -->
+        <div class="card">
+            <div class="card-number">04</div>
+            <div class="card-content">
+                <p>podés crear una imagen de un reloj de agujas que marque las 3 menos cuarto?</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 3)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 5 -->
+        <div class="card">
+            <div class="card-number">05</div>
+            <div class="card-content">
+                <p>Actuá como un secretario judicial minuciosamente detallista. A partir del siguiente relato, armá una tabla cronológica con dos columnas: Fecha/Hora y Hecho Relevante. Ordenalo de forma estrictamente cronológica (del hecho más antiguo al más reciente) y resaltá en negrita las contradicciones temporales si detectás alguna en el relato.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 4)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 6 -->
+        <div class="card">
+            <div class="card-number">06</div>
+            <div class="card-content">
+                <p>Actúa como un asistente judicial. Resume el siguiente fallo judicial [Pega aquí un fragmento o enlace a un fallo real o ficticio, ej: una sentencia sobre responsabilidad civil por accidente de tráfico]. Incluye: 1) Hechos relevantes, 2) Fundamentos de derecho clave, 3) Decisión final (condena o absolución), 4) Monto de la indemnización si aplica. Presenta el resumen en formato de tabla clara y concisa.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 5)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 7 -->
+        <div class="card">
+            <div class="card-number">07</div>
+            <div class="card-content">
+                <p>Actuá como un experto en Lenguaje Claro aplicado al Poder Judicial. Revisá el siguiente fragmento de texto y reformulalo para que sea perfectamente comprensible para un ciudadano común sin formación jurídica, pero manteniendo estrictamente los efectos y la validez legal del acto. Mostrame el 'Antes' y el 'Después.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 6)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 8 -->
+        <div class="card">
+            <div class="card-number">08</div>
+            <div class="card-content">
+                <p>Actúa como un relator judicial con 20 años de experiencia. Analiza el siguiente fragmento y genera un resumen estructurado que incluya: 1. Hechos principales, 2. Pretensiones de la parte actora, 3. Normativa citada y 4. Identificación de posibles puntos de controversia. Formato: Lista con viñetas. Si el texto no menciona algún punto, indica 'No especificado' en lugar de inferir.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 7)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 9 -->
+        <div class="card">
+            <div class="card-number">09</div>
+            <div class="card-content">
+                <p>Compara dos prompts sobre el mismo tema:
+Carlos tiene 23 años, es la segunda vez que es detenido por robo en al vía pública en Argentina.
+'¿Por qué es justo denegar la excarcelación en este caso?' (Sesgado).
+'Analiza los argumentos a favor y en contra de la excarcelación en este contexto, citando la normativa de riesgos procesales vigente'.
+Observa cómo cambia la profundidad de la respuesta y el equilibrio de los argumentos presentados por la IA</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 8)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 10 -->
+        <div class="card">
+            <div class="card-number">10</div>
+            <div class="card-content">
+                <p>Voy a pegarte el argumento principal que tengo pensado para resolver un recurso. Quiero que actúes como un abogado litigante extremadamente agudo y encuentres los tres puntos más débiles, las posibles lagunas lógicas o las vías de apelación que mi argumento le dejaría servidas a la contraparte. Sé crítico y estricto.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 9)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 11 -->
+        <div class="card">
+            <div class="card-number">11</div>
+            <div class="card-content">
+                <p>[VER ALUCINACIONES] ¿Podrías citarme tres fallos de la Corte Suprema de Justicia de la Nación Argentina que hablen específicamente sobre la aplicación de astreintes a obras sociales en el año 2023, detallando autos, tomo y folio?</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 10)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 12 -->
+        <div class="card">
+            <div class="card-number">12</div>
+            <div class="card-content">
+                <p>Simula una discusión entre Kelsen y Cossio sobre "que es el derecho" respetando el pensamiento de cada uno y los argumentos que utilizaría cada uno para responderle al otro</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 11)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 13 -->
+        <div class="card">
+            <div class="card-number">13</div>
+            <div class="card-content">
+                <p>Explica que es el imperativo kantiano de forma tal que lo entienda un niño de 10 años</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 12)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 14 -->
+        <div class="card">
+            <div class="card-number">14</div>
+            <div class="card-content">
+                <p>Identifica cuáles son las cuestiones de hecho y cuáles las cuestiones de derecho debatidas en este expediente.
+
+Luego enumera:
+- hechos controvertidos;
+- hechos no controvertidos;
+- prueba relevante para cada uno.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 13)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 15 -->
+        <div class="card">
+            <div class="card-number">15</div>
+            <div class="card-content">
+                <p>Explica de manera sencilla:
+- qué es metadata;
+- cómo puede alterarse una imagen;
+- qué elementos aumentan o disminuyen credibilidad en prueba digital.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 14)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 16 -->
+        <div class="card">
+            <div class="card-number">16</div>
+            <div class="card-content">
+                <p>Marca frases ambiguas, oscuras o redundantes en esta resolución judicial.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 15)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 17 -->
+        <div class="card">
+            <div class="card-number">17</div>
+            <div class="card-content">
+                <p>Analiza esta sentencia y señala:
+- premisas fácticas;
+- premisas jurídicas;
+- inferencias;
+- posibles saltos argumentativos;
+- puntos con fundamentación insuficiente.</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 16)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+
+        <!-- Tarjeta 18 -->
+        <div class="card">
+            <div class="card-number">18</div>
+            <div class="card-content">
+                <p>quiero crear un prompt para…</p>
+            </div>
+            <button class="copy-btn" onclick="copyPrompt(this, 17)">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copiar
+            </button>
+        </div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip">¡Copiado!</div>
+
+    <script>
+        // Array con todos los prompts
+        const prompts = [
+            "Quisiera una página web en un solo archivo html que sea una Calculadora de Indemnización por Incapacidad\nEl usuario debería poder ingresar 3 datos:\nEdad al momento del accidente:\nIngreso mensual:\nPorcentaje de incapacidad\ny la fórmula a aplicar sería\nC = {A x [(1 + i)n - 1] / [i (1 + i)n]} x P/100\nDonde: \nC es el capital a calcular\nA es el ingreso mensual ingresado, multiplicado por 13\ni es la tasa de descuento que es del 4% anual, es decir es 0,04\nn es 70 (edad límite) - edad al momento del accidente",
+            
+            "crea una web en un solo archivo html que permita pegar un texto, detecte los nombres propios  (nombre y apellido) y los reemplace por su inicial. También los números de 8 y 11 cifras, que los reemplace por xxxxxxxx. Por ejemplo:\nSe presenta Juan Pérez, DNI 12345678 alegando que...\nque sea reemplazado por\nSe presenta J. P. DNI xxxxxxxx alegando que...",
+            
+            "Tengo que lavar el auto, si el autolavado está a una cuadra, me conviene ir en auto o caminando?",
+            
+            "podés crear una imagen de un reloj de agujas que marque las 3 menos cuarto?",
+            
+            "Actuá como un secretario judicial minuciosamente detallista. A partir del siguiente relato, armá una tabla cronológica con dos columnas: Fecha/Hora y Hecho Relevante. Ordenalo de forma estrictamente cronológica (del hecho más antiguo al más reciente) y resaltá en negrita las contradicciones temporales si detectás alguna en el relato.",
+            
+            "Actúa como un asistente judicial. Resume el siguiente fallo judicial [Pega aquí un fragmento o enlace a un fallo real o ficticio, ej: una sentencia sobre responsabilidad civil por accidente de tráfico]. Incluye: 1) Hechos relevantes, 2) Fundamentos de derecho clave, 3) Decisión final (condena o absolución), 4) Monto de la indemnización si aplica. Presenta el resumen en formato de tabla clara y concisa.",
+            
+            "Actuá como un experto en Lenguaje Claro aplicado al Poder Judicial. Revisá el siguiente fragmento de texto y reformulalo para que sea perfectamente comprensible para un ciudadano común sin formación jurídica, pero manteniendo estrictamente los efectos y la validez legal del acto. Mostrame el 'Antes' y el 'Después.",
+            
+            "Actúa como un relator judicial con 20 años de experiencia. Analiza el siguiente fragmento y genera un resumen estructurado que incluya: 1. Hechos principales, 2. Pretensiones de la parte actora, 3. Normativa citada y 4. Identificación de posibles puntos de controversia. Formato: Lista con viñetas. Si el texto no menciona algún punto, indica 'No especificado' en lugar de inferir.",
+            
+            "Compara dos prompts sobre el mismo tema:\nCarlos tiene 23 años, es la segunda vez que es detenido por robo en al vía pública en Argentina.\n'¿Por qué es justo denegar la excarcelación en este caso?' (Sesgado).\n'Analiza los argumentos a favor y en contra de la excarcelación en este contexto, citando la normativa de riesgos procesales vigente'.\nObserva cómo cambia la profundidad de la respuesta y el equilibrio de los argumentos presentados por la IA",
+            
+            "Voy a pegarte el argumento principal que tengo pensado para resolver un recurso. Quiero que actúes como un abogado litigante extremadamente agudo y encuentres los tres puntos más débiles, las posibles lagunas lógicas o las vías de apelación que mi argumento le dejaría servidas a la contraparte. Sé crítico y estricto.",
+            
+            "[VER ALUCINACIONES] ¿Podrías citarme tres fallos de la Corte Suprema de Justicia de la Nación Argentina que hablen específicamente sobre la aplicación de astreintes a obras sociales en el año 2023, detallando autos, tomo y folio?",
+            
+            "Simula una discusión entre Kelsen y Cossio sobre \"que es el derecho\" respetando el pensamiento de cada uno y los argumentos que utilizaría cada uno para responderle al otro",
+            
+            "Explica que es el imperativo kantiano de forma tal que lo entienda un niño de 10 años",
+            
+            "Identifica cuáles son las cuestiones de hecho y cuáles las cuestiones de derecho debatidas en este expediente.\n\nLuego enumera:\n- hechos controvertidos;\n- hechos no controvertidos;\n- prueba relevante para cada uno.",
+            
+            "Explica de manera sencilla:\n- qué es metadata;\n- cómo puede alterarse una imagen;\n- qué elementos aumentan o disminuyen credibilidad en prueba digital.",
+            
+            "Marca frases ambiguas, oscuras o redundantes en esta resolución judicial.",
+            
+            "Analiza esta sentencia y señala:\n- premisas fácticas;\n- premisas jurídicas;\n- inferencias;\n- posibles saltos argumentativos;\n- puntos con fundamentación insuficiente.",
+            
+            "quiero crear un prompt para…"
+        ];
+
+        // Función para copiar el prompt
+        function copyPrompt(button, index) {
+            const prompt = prompts[index];
+            
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(prompt).then(() => {
+                // Cambiar el botón para mostrar "Copiado"
+                button.classList.add('copied');
+                button.innerHTML = `
+                    <svg class="copy-icon" viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                    Copiado
+                `;
+                
+                // Mostrar tooltip
+                const tooltip = document.getElementById('tooltip');
+                tooltip.textContent = '¡Copiado!';
+                tooltip.classList.add('show');
+                
+                // Posicionar tooltip
+                const rect = button.getBoundingClientRect();
+                tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
+                tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+                
+                // Restaurar botón después de 2 segundos
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.innerHTML = `
+                        <svg class="copy-icon" viewBox="0 0 24 24">
+                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                        </svg>
+                        Copiar
+                    `;
+                    tooltip.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+            });
+        }
+    </script>
+</body>
+</html>
